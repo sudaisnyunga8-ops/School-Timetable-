@@ -25,9 +25,7 @@
     .neon-glow { box-shadow: 0 0 20px rgba(139, 92, 246, 0.25); }
     .pulse-dot { width: 8px; height: 8px; background-color: #06b6d4; border-radius: 50%; box-shadow: 0 0 10px #06b6d4; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.25); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
-    /* Hide scrollbar for Chrome, Safari and Opera */
     .no-scrollbar::-webkit-scrollbar { display: none; }
-    /* Hide scrollbar for IE, Edge and Firefox */
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
@@ -101,68 +99,67 @@
   </nav>
 
   <script>
-    // Full Custom Schedule Data (Math -> Mr McLarty everyday, Period 7 -> Mr Fulton Mon-Thu, Mr McGimpsy Fri)
+    // Strict Schedule: Mathematics = Mr McLarty everyday. Period 7 = Mr Fulton (Mon-Thu), Mr McGimpsy (Fri).
     const scheduleData = {
       Monday: [
-        { start: '08:50', end: '09:40', name: 'Administration', teacher: 'Mr McDermott', room: 'F24', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'PE Core 5–14', teacher: 'Mr McGimpsy', room: 'P/E', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'Modern Studies', teacher: 'Mr Kelly', room: 'S23', type: 'class' },
+        { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '09:40', end: '10:25', name: 'Period 2', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'RE Core 5–14', teacher: 'Mr Mackay', room: 'S13', type: 'class' },
+        { start: '11:25', end: '12:15', name: 'Period 4 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Science', teacher: 'Dr Smith', room: 'Sc4', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'English', teacher: 'Mr Fulton', room: 'E2', type: 'class' }
+        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr Fulton', room: 'Room', type: 'class' }
       ],
       Tuesday: [
-        { start: '08:50', end: '09:40', name: 'English', teacher: 'Mr Fulton', room: 'E2', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'History', teacher: 'Ms Vance', room: 'H1', type: 'class' },
+        { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '09:40', end: '10:25', name: 'Period 2 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Chemistry', teacher: 'Dr Brown', room: 'Sc1', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'Computing', teacher: 'Mr Gates', room: 'IT1', type: 'class' },
+        { start: '11:25', end: '12:15', name: 'Period 4', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Art & Design', teacher: 'Ms Artie', room: 'A1', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'Period 7 Study', teacher: 'Mr Fulton', room: 'S10', type: 'class' }
+        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr Fulton', room: 'Room', type: 'class' }
       ],
       Wednesday: [
-        { start: '08:50', end: '09:40', name: 'Administration', teacher: 'Mr McDermott', room: 'F24', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'PE Core 5–14', teacher: 'Mr McGimpsy', room: 'P/E', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'Modern Studies', teacher: 'Mr Kelly', room: 'S23', type: 'class' },
+        { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '09:40', end: '10:25', name: 'Period 2', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'RE Core 5–14', teacher: 'Mr Mackay', room: 'S13', type: 'class' },
+        { start: '11:25', end: '12:15', name: 'Period 4 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Physics', teacher: 'Mr Newton', room: 'Sc2', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'Period 7 Extra', teacher: 'Mr Fulton', room: 'F2', type: 'class' }
+        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr Fulton', room: 'Room', type: 'class' }
       ],
       Thursday: [
-        { start: '08:50', end: '09:40', name: 'Geography', teacher: 'Ms Globe', room: 'G4', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'Biology', teacher: 'Dr Leaf', room: 'Sc3', type: 'class' },
+        { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '09:40', end: '10:25', name: 'Period 2 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'English', teacher: 'Mr Fulton', room: 'E2', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'Music', teacher: 'Mr Mozart', room: 'M1', type: 'class' },
+        { start: '11:25', end: '12:15', name: 'Period 4', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Modern Studies', teacher: 'Mr Kelly', room: 'S23', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'Period 7 Tutor', teacher: 'Mr Fulton', room: 'T1', type: 'class' }
+        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr Fulton', room: 'Room', type: 'class' }
       ],
       Friday: [
-        { start: '08:50', end: '09:40', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'English', teacher: 'Mr Fulton', room: 'E2', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'Drama', teacher: 'Ms Stage', room: 'D1', type: 'class' },
+        { start: '08:50', end: '09:40', name: 'Period 1 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '09:40', end: '10:25', name: 'Period 2', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Computing', teacher: 'Mr Gates', room: 'IT1', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'Modern Studies', teacher: 'Mr Kelly', room: 'S23', type: 'class' },
+        { start: '11:25', end: '12:15', name: 'Period 4', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Science', teacher: 'Dr Smith', room: 'Sc4', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'PE Activity', teacher: 'Mr McGimpsy', room: 'P/E', type: 'class' }
+        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Room', type: 'class' },
+        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr McGimpsy', room: 'Room', type: 'class' }
       ]
     };
 
     let activeDay = 'Monday';
 
-    // Auto-select today's day of the week on load
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const todayName = daysOfWeek[new Date().getDay()];
     if (scheduleData[todayName]) {
@@ -192,7 +189,7 @@
 
       listContainer.innerHTML = '';
 
-      classes.forEach((item, index) => {
+      classes.forEach((item) => {
         const isBreak = item.type === 'break';
         const card = document.createElement('div');
         card.className = `cyber-card rounded-2xl p-4 flex items-center justify-between transition-all ${isBreak ? 'border-amber-500/30 bg-amber-950/10' : ''}`;
@@ -218,12 +215,10 @@
       });
     }
 
-    // Live Countdown and Status Engine
     function updateCountdown() {
       const now = new Date();
       const currentDayStr = daysOfWeek[now.getDay()];
       const currentTimeMins = now.getHours() * 60 + now.getMinutes();
-      const currentSecs = now.getSeconds();
 
       const titleEl = document.getElementById('next-class-title');
       const timerEl = document.getElementById('countdown-timer');
@@ -250,7 +245,7 @@
 
       if (nextClass) {
         statusEl.innerText = "School Active";
-        titleEl.innerText = `Next: ${nextClass.name} (${nextClass.room})`;
+        titleEl.innerText = `Next: ${nextClass.name} (${nextClass.teacher})`;
 
         const [sh, sm] = nextClass.start.split(':').map(Number);
         const targetTotalSecs = (sh * 3600 + sm * 60);
@@ -291,7 +286,6 @@
       }
     }
 
-    // Initialize app
     setDay(activeDay);
     setInterval(updateCountdown, 1000);
     updateCountdown();
