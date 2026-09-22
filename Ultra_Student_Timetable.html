@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudais's Cyber Timetable</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#0c0a1d',
+                            card: '#15122c',
+                            cardHover: '#1e1a3f',
+                            purple: '#8b5cf6',
+                            neonPurple: '#a855f7',
+                            cyan: '#06b6d4',
+                            pink: '#ec4899',
+                            darkBorder: 'rgba(255, 255, 255, 0.08)',
+                        }
+                    },
+                    boxShadow: {
+                        'neon': '0 0 20px rgba(139, 92, 246, 0.25)',
+                        'cyan-glow': '0 0 15px rgba(6, 182, 212, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0a1d;
+            color: #f3f4f6;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0a1d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2450;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6;
+        }
+        .glass-header {
+            background: rgba(15, 13, 31, 0.90);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(18, 15, 38, 0.90);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: linear-gradient(135deg, rgba(26, 22, 53, 0.75) 0%, rgba(18, 15, 38, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(139, 92, 246, 0.15);
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.97); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-32 selection:bg-purple-500 selection:text-white">
+
+    <!-- Top Safe Header Area with User Details -->
+    <header class="glass-header sticky top-0 z-50 px-4 pt-5 pb-4">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-full blur opacity-75 animate-pulse"></div>
+                    <div class="relative w-12 h-12 rounded-full bg-cyber-card border border-purple-500/40 flex items-center justify-center text-purple-200 font-extrabold text-lg shadow-inner">
+                        SN
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-[11px] uppercase tracking-wider text-purple-400 font-bold">Student Portal</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    </div>
+                    <h1 class="text-lg font-extrabold text-white tracking-tight">
+                        Sudais Nyunga
+                    </h1>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <div class="px-3 py-1.5 rounded-full bg-purple-950/70 border border-purple-500/40 text-purple-300 text-xs font-semibold flex items-center space-x-1.5 shadow-sm">
+                    <i class="fa-solid fa-graduation-cap text-cyan-400 text-xs"></i>
+                    <span>S4 • 08:50 - 15:15</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Scrollable Container -->
+    <main class="flex-1 max-w-md w-full mx-auto px-4 pt-4 space-y-4">
+
+        <!-- Status Card / Banner -->
+        <div class="glass-card rounded-2xl p-4 relative overflow-hidden animate-pulse-glow">
+            <!-- Background ambient glow -->
+            <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-purple-600/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -left-10 -top-10 w-32 h-32 bg-cyan-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="flex justify-between items-start mb-3 relative z-10">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-900/40 border border-purple-500/30 text-purple-300 text-xs font-medium">
+                    <i class="fa-solid fa-moon text-indigo-400"></i>
+                    <span>SCHOOL DAY STATUS</span>
+                </div>
+                <div id="liveClock" class="text-sm font-mono font-bold text-cyan-300 tracking-wider bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">
+                    21:03:09
+                </div>
+            </div>
+
+            <div class="relative z-10">
+                <h2 class="text-xl font-extrabold text-white tracking-tight">Daily Timetable Active</h2>
+                <p class="text-xs text-gray-400 mt-0.5">Welcome back, Sudais! All classes loaded.</p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-gray-300 relative z-10">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-clock text-cyan-400"></i>
+                    <span>School Hours: <strong>08:50 – 15:15</strong></span>
+                </div>
+                <span class="text-purple-400 font-semibold hover:underline cursor-pointer" onclick="openAddClassModal()">+ Add Class</span>
+            </div>
+        </div>
+
+        <!-- Day Selector Tabs -->
+        <div class="flex space-x-2 overflow-x-auto pb-1 no-scrollbar" id="dayTabsContainer">
+            <!-- Dynamic days injected via JS -->
+        </div>
+
+        <!-- Schedule Header & Quick Stats -->
+        <div class="flex items-center justify-between px-1">
+            <div class="flex items-center space-x-2">
+                <h3 id="currentDayTitle" class="text-base font-bold text-white tracking-wide">Wednesday Schedule</h3>
+                <span id="classCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-300 border border-purple-500/30 font-semibold">Classes</span>
+            </div>
+            <button onclick="openAddClassModal()" class="text-xs bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 border border-purple-500/40 px-3 py-1.5 rounded-xl font-medium transition flex items-center space-x-1.5 shadow-sm">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+                <span>Add Class</span>
+            </button>
+        </div>
+
+        <!-- Timetable Cards Container -->
+        <div id="timetableList" class="space-y-3">
+            <!-- Populated dynamically via JS -->
+        </div>
+
+    </main>
+
+    <!-- Floating Bottom Navigation Bar -->
+    <nav class="glass-nav fixed bottom-0 left-0 right-0 z-50 py-3 px-6 shadow-2xl">
+        <div class="max-w-md mx-auto flex items-center justify-around">
+            <button onclick="switchTab('timetable')" id="navTimetableBtn" class="flex flex-col items-center space-y-1 text-purple-400 transition transform active:scale-95">
+                <div class="p-1.5 rounded-xl bg-purple-900/40 border border-purple-500/30">
+                    <i class="fa-solid fa-calendar-days text-lg"></i>
+                </div>
+                <span class="text-[11px] font-semibold">Timetable</span>
+            </button>
+            <button onclick="switchTab('belltimes')" id="navBellTimesBtn" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-purple-300 transition transform active:scale-95">
+                <div class="p-1.5 rounded-xl bg-transparent">
+                    <i class="fa-solid fa-mug-hot text-lg"></i>
+                </div>
+                <span class="text-[11px] font-medium">Bell Times</span>
+            </button>
+            <button onclick="switchTab('settings')" id="navSettingsBtn" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-purple-300 transition transform active:scale-95">
+                <div class="p-1.5 rounded-xl bg-transparent">
+                    <i class="fa-solid fa-gear text-lg"></i>
+                </div>
+                <span class="text-[11px] font-medium">Settings</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Add Class Modal -->
+    <div id="addClassModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm rounded-2xl p-6 border border-purple-500/30 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-purple-400"></i> Add New Class
+                </h3>
+                <button onclick="closeAddClassModal()" class="text-gray-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="addClassForm" onsubmit="handleAddNewClass(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Day of Week</label>
+                    <select id="newClassDay" class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday" selected>Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Start Time</label>
+                        <input type="text" id="newClassStart" placeholder="08:50" required class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">End Time</label>
+                        <input type="text" id="newClassEnd" placeholder="09:40" required class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Subject Name</label>
+                    <input type="text" id="newClassTitle" placeholder="e.g. Computing Science" required class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Teacher</label>
+                        <input type="text" id="newClassTeacher" placeholder="Mr. Smith" required class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Room</label>
+                        <input type="text" id="newClassRoom" placeholder="F24" required class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Type</label>
+                    <select id="newClassType" class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                        <option value="normal">Normal Class</option>
+                        <option value="break">Break / Lunch</option>
+                    </select>
+                </div>
+                <div class="pt-2 flex space-x-2">
+                    <button type="button" onclick="closeAddClassModal()" class="flex-1 bg-white/5 hover:bg-white/10 text-gray-300 py-2.5 rounded-xl text-sm font-medium transition">Cancel</button>
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-purple-600 to-cyan-500 text-white py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-purple-600/30 hover:opacity-90 transition">Save Class</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-cyber-card border border-purple-500/40 text-white px-4 py-2.5 rounded-2xl shadow-2xl text-xs font-medium flex items-center space-x-2 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+        <span id="toastMessage">Action completed successfully</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Complete timetable data for Monday through Friday
+        // Rule applied: Math teacher is Mr McLarty every day.
+        // Rule applied: Period 7 (PE Core 5-14) is Mr Fulton every day except Friday (where it's Mr McGimpsy).
+        const defaultTimetable = {
+            "Monday": [
+                { id: "mon_1", start: "08:50", end: "09:40", title: "Administration", teacher: "Mr McDermott", room: "F24", type: "normal" },
+                { id: "mon_2", start: "09:40", end: "10:25", title: "PE Core 5-14", teacher: "Mr Fulton", room: "P/E", type: "normal" },
+                { id: "mon_3", start: "10:25", end: "11:10", title: "Modern Studies", teacher: "Mr Kelly", room: "S23", type: "normal" },
+                { id: "mon_4", start: "11:10", end: "11:25", title: "Morning Break", teacher: "Break", room: "Cafeteria", type: "break" },
+                { id: "mon_5", start: "11:25", end: "12:15", title: "Mathematics", teacher: "Mr McLarty", room: "F1", type: "normal" },
+                { id: "mon_6", start: "12:15", end: "13:05", title: "RE Core 5-14", teacher: "Mr Mackay", room: "S13", type: "normal" },
+                { id: "mon_7", start: "13:05", end: "13:55", title: "English Lit", teacher: "Ms. Henderson", room: "S12", type: "normal" },
+                { id: "mon_8", start: "13:55", end: "14:35", title: "Physics", teacher: "Mr. Vance", room: "S18", type: "normal" },
+                { id: "mon_9", start: "14:35", end: "15:15", title: "Computing Science", teacher: "Mr. Turing", room: "F14", type: "normal" }
+            ],
+            "Tuesday": [
+                { id: "tue_1", start: "08:50", end: "09:40", title: "Chemistry", teacher: "Dr. Wright", room: "S10", type: "normal" },
+                { id: "tue_2", start: "09:40", end: "10:25", title: "Mathematics", teacher: "Mr McLarty", room: "F1", type: "normal" },
+                { id: "tue_3", start: "10:25", end: "11:10", title: "Administration", teacher: "Mr McDermott", room: "F24", type: "normal" },
+                { id: "tue_4", start: "11:10", end: "11:25", title: "Morning Break", teacher: "Break", room: "Cafeteria", type: "break" },
+                { id: "tue_5", start: "11:25", end: "12:15", title: "Computing Science", teacher: "Mr. Turing", room: "F14", type: "normal" },
+                { id: "tue_6", start: "12:15", end: "13:05", title: "RE Core 5-14", teacher: "Mr Mackay", room: "S13", type: "normal" },
+                { id: "tue_7", start: "13:05", end: "13:55", title: "PE Core 5-14", teacher: "Mr Fulton", room: "P/E", type: "normal" },
+                { id: "tue_8", start: "13:55", end: "14:35", title: "Modern Studies", teacher: "Mr Kelly", room: "S23", type: "normal" },
+                { id: "tue_9", start: "14:35", end: "15:15", title: "English Lit", teacher: "Ms. Henderson", room: "S12", type: "normal" }
+            ],
+            "Wednesday": [
+                { id: "wed_1", start: "08:50", end: "09:40", title: "Administration", teacher: "Mr McDermott", room: "F24", type: "normal" },
+                { id: "wed_2", start: "09:40", end: "10:25", title: "PE Core 5-14", teacher: "Mr Fulton", room: "P/E", type: "normal" },
+                { id: "wed_3", start: "10:25", end: "11:10", title: "Modern Studies", teacher: "Mr Kelly", room: "S23", type: "normal" },
+                { id: "wed_4", start: "11:10", end: "11:25", title: "Morning Break", teacher: "Break", room: "Cafeteria", type: "break" },
+                { id: "wed_5", start: "11:25", end: "12:15", title: "Mathematics", teacher: "Mr McLarty", room: "F1", type: "normal" },
+                { id: "wed_6", start: "12:15", end: "13:05", title: "RE Core 5-14", teacher: "Mr Mackay", room: "S13", type: "normal" },
+                { id: "wed_7", start: "13:05", end: "13:55", title: "Biology", teacher: "Ms. Green", room: "S05", type: "normal" },
+                { id: "wed_8", start: "13:55", end: "14:35", title: "Chemistry", teacher: "Dr. Wright", room: "S10", type: "normal" },
+                { id: "wed_9", start: "14:35", end: "15:15", title: "Physics", teacher: "Mr. Vance", room: "S18", type: "normal" }
+            ],
+            "Thursday": [
+                { id: "thu_1", start: "08:50", end: "09:40", title: "Biology", teacher: "Ms. Green", room: "S05", type: "normal" },
+                { id: "thu_2", start: "09:40", end: "10:25", title: "Modern Studies", teacher: "Mr Kelly", room: "S23", type: "normal" },
+                { id: "thu_3", start: "10:25", end: "11:10", title: "English Lit", teacher: "Ms. Henderson", room: "S12", type: "normal" },
+                { id: "thu_4", start: "11:10", end: "11:25", title: "Morning Break", teacher: "Break", room: "Cafeteria", type: "break" },
+                { id: "thu_5", start: "11:25", end: "12:15", title: "Mathematics", teacher: "Mr McLarty", room: "F1", type: "normal" },
+                { id: "thu_6", start: "12:15", end: "13:05", title: "Art & Design", teacher: "Ms. Picasso", room: "A02", type: "normal" },
+                { id: "thu_7", start: "13:05", end: "13:55", title: "PE Core 5-14", teacher: "Mr Fulton", room: "P/E", type: "normal" },
+                { id: "thu_8", start: "13:55", end: "14:35", title: "Computing Science", teacher: "Mr. Turing", room: "F14", type: "normal" },
+                { id: "thu_9", start: "14:35", end: "15:15", title: "Administration", teacher: "Mr McDermott", room: "F24", type: "normal" }
+            ],
+            "Friday": [
+                { id: "fri_1", start: "08:50", end: "09:40", title: "Mathematics", teacher: "Mr McLarty", room: "F1", type: "normal" },
+                { id: "fri_2", start: "09:40", end: "10:25", title: "Physics", teacher: "Mr. Vance", room: "S18", type: "normal" },
+                { id: "fri_3", start: "10:25", end: "11:10", title: "Administration", teacher: "Mr McDermott", room: "F24", type: "normal" },
+                { id: "fri_4", start: "11:10", end: "11:25", title: "Morning Break", teacher: "Break", room: "Cafeteria", type: "break" },
+                { id: "fri_5", start: "11:25", end: "12:15", title: "Music", teacher: "Mr. Mozart", room: "M01", type: "normal" },
+                { id: "fri_6", start: "12:15", end: "13:05", title: "Computing Science", teacher: "Mr. Turing", room: "F14", type: "normal" },
+                { id: "fri_7", start: "13:05", end: "13:55", title: "PE Core 5-14", teacher: "Mr McGimpsy", room: "P/E", type: "normal" },
+                { id: "fri_8", start: "13:55", end: "14:35", title: "Modern Studies", teacher: "Mr Kelly", room: "S23", type: "normal" },
+                { id: "fri_9", start: "14:35", end: "15:15", title: "English Lit", teacher: "Ms. Henderson", room: "S12", type: "normal" }
+            ]
+        };
+
+        // State variables
+        let timetableData = JSON.parse(localStorage.getItem('sudais_timetable_v2')) || defaultTimetable;
+        let currentDay = "Wednesday";
+        let activeTab = "timetable";
+
+        // Initialize App on load
+        window.onload = function() {
+            renderDayTabs();
+            renderTimetable();
+            initLiveClock();
+        };
+
+        // Live Clock Simulation
+        function initLiveClock() {
+            setInterval(() => {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                const clockEl = document.getElementById('liveClock');
+                if (clockEl) {
+                    clockEl.innerText = `${hours}:${minutes}:${seconds}`;
+                }
+            }, 1000);
+        }
+
+        // Render Day Selector Tabs
+        function renderDayTabs() {
+            const container = document.getElementById('dayTabsContainer');
+            const days = Object.keys(timetableData);
+            
+            container.innerHTML = days.map(day => {
+                const isActive = day === currentDay;
+                return `
+                    <button onclick="selectDay('${day}')" class="px-4 py-2 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all duration-300 flex items-center space-x-1.5 ${isActive ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-600/30 border border-purple-400/30 scale-105' : 'glass-card text-gray-400 hover:text-white'}">
+                        <span>${day}</span>
+                        ${isActive ? '<span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>' : ''}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Select Day
+        function selectDay(day) {
+            currentDay = day;
+            renderDayTabs();
+            renderTimetable();
+        }
+
+        // Render Timetable Schedule for active day
+        function renderTimetable() {
+            const container = document.getElementById('timetableList');
+            const titleEl = document.getElementById('currentDayTitle');
+            const badgeEl = document.getElementById('classCountBadge');
+            
+            titleEl.innerText = `${currentDay} Schedule`;
+            const classes = timetableData[currentDay] || [];
+            badgeEl.innerText = `${classes.length} Classes`;
+
+            if (classes.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-card rounded-2xl p-8 text-center space-y-2">
+                        <i class="fa-solid fa-mug-saucer text-3xl text-purple-400 opacity-60"></i>
+                        <p class="text-sm font-semibold text-white">No classes scheduled</p>
+                        <p class="text-xs text-gray-400">Enjoy your free day or add a custom class!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = classes.map((cls) => {
+                const isBreak = cls.type === 'break';
+                return `
+                    <div class="glass-card rounded-2xl p-3.5 flex items-center justify-between transition-all duration-200 group">
+                        <!-- Left Time Badge -->
+                        <div class="w-20 flex-shrink-0 pr-3 border-r border-white/5">
+                            <div class="text-[13px] font-bold font-mono ${isBreak ? 'text-amber-300' : 'text-white'}">${cls.start}</div>
+                            <div class="text-[11px] font-mono text-gray-400">${cls.end}</div>
+                        </div>
+
+                        <!-- Center Info -->
+                        <div class="flex-1 px-3">
+                            <div class="flex items-center space-x-2">
+                                <h4 class="text-sm font-bold text-white tracking-tight">${cls.title}</h4>
+                                ${isBreak ? '<span class="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-[10px] font-bold text-amber-300">BREAK</span>' : ''}
+                            </div>
+                            <div class="flex items-center space-x-3 mt-1 text-xs text-gray-400">
+                                <span class="flex items-center space-x-1">
+                                    <i class="fa-solid fa-user-tie text-[10px] text-purple-400"></i>
+                                    <span>${cls.teacher}</span>
+                                </span>
+                                <span>•</span>
+                                <span class="flex items-center space-x-1">
+                                    <i class="fa-solid fa-location-dot text-[10px] text-cyan-400"></i>
+                                    <span>${cls.room}</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Right Action / Delete Button -->
+                        <div class="flex items-center space-x-1">
+                            <button onclick="deleteClass('${cls.id}')" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-rose-500/20 text-gray-400 hover:text-rose-400 flex items-center justify-center transition" title="Delete Class">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Switch bottom navbar tabs
+        function switchTab(tab) {
+            activeTab = tab;
+            
+            document.getElementById('navTimetableBtn').className = `flex flex-col items-center space-y-1 transition transform active:scale-95 ${tab === 'timetable' ? 'text-purple-400' : 'text-gray-400 hover:text-purple-300'}`;
+            document.getElementById('navTimetableBtn').querySelector('div').className = `p-1.5 rounded-xl ${tab === 'timetable' ? 'bg-purple-900/40 border border-purple-500/30' : 'bg-transparent'}`;
+
+            document.getElementById('navBellTimesBtn').className = `flex flex-col items-center space-y-1 transition transform active:scale-95 ${tab === 'belltimes' ? 'text-purple-400' : 'text-gray-400 hover:text-purple-300'}`;
+            document.getElementById('navBellTimesBtn').querySelector('div').className = `p-1.5 rounded-xl ${tab === 'belltimes' ? 'bg-purple-900/40 border border-purple-500/30' : 'bg-transparent'}`;
+
+            document.getElementById('navSettingsBtn').className = `flex flex-col items-center space-y-1 transition transform active:scale-95 ${tab === 'settings' ? 'text-purple-400' : 'text-gray-400 hover:text-purple-300'}`;
+            document.getElementById('navSettingsBtn').querySelector('div').className = `p-1.5 rounded-xl ${tab === 'settings' ? 'bg-purple-900/40 border border-purple-500/30' : 'bg-transparent'}`;
+
+            const mainContainer = document.querySelector('main');
+
+            if (tab === 'timetable') {
+                mainContainer.innerHTML = `
+                    <div class="glass-card rounded-2xl p-4 relative overflow-hidden animate-pulse-glow">
+                        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-purple-600/20 rounded-full blur-2xl pointer-events-none"></div>
+                        <div class="absolute -left-10 -top-10 w-32 h-32 bg-cyan-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+                        <div class="flex justify-between items-start mb-3 relative z-10">
+                            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-900/40 border border-purple-500/30 text-purple-300 text-xs font-medium">
+                                <i class="fa-solid fa-moon text-indigo-400"></i>
+                                <span>DAILY TIMETABLE ACTIVE</span>
+                            </div>
+                            <div id="liveClock" class="text-sm font-mono font-bold text-cyan-300 tracking-wider bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">
+                                21:03:09
+                            </div>
+                        </div>
+
+                        <div class="relative z-10">
+                            <h2 class="text-xl font-extrabold text-white tracking-tight">Full Day Schedule</h2>
+                            <p class="text-xs text-gray-400 mt-0.5">Welcome back, Sudais! All classes loaded.</p>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-gray-300 relative z-10">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-clock text-cyan-400"></i>
+                                <span>School Hours: <strong>08:50 – 15:15</strong></span>
+                            </div>
+                            <span class="text-purple-400 font-medium hover:underline cursor-pointer" onclick="openAddClassModal()">+ Add Class</span>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-2 overflow-x-auto pb-1 no-scrollbar" id="dayTabsContainer"></div>
+
+                    <div class="flex items-center justify-between px-1">
+                        <div class="flex items-center space-x-2">
+                            <h3 id="currentDayTitle" class="text-base font-bold text-white tracking-wide">Wednesday Schedule</h3>
+                            <span id="classCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-300 border border-purple-500/30 font-semibold">Classes</span>
+                        </div>
+                        <button onclick="openAddClassModal()" class="text-xs bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 border border-purple-500/40 px-3 py-1.5 rounded-xl font-medium transition flex items-center space-x-1.5 shadow-sm">
+                            <i class="fa-solid fa-plus text-[10px]"></i>
+                            <span>Add Class</span>
+                        </button>
+                    </div>
+
+                    <div id="timetableList" class="space-y-3"></div>
+                `;
+                renderDayTabs();
+                renderTimetable();
+            } else if (tab === 'belltimes') {
+                mainContainer.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="glass-card rounded-2xl p-5 border border-purple-500/30">
+                            <h2 class="text-lg font-bold text-white flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-bell text-cyan-400"></i> Bell Times Schedule
+                            </h2>
+                            <p class="text-xs text-gray-400">Standard school period intervals (08:50 – 15:15).</p>
+                        </div>
+
+                        <div class="space-y-2.5">
+                            <div class="glass-card rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xs font-mono">P1</div>
+                                    <div><h4 class="text-sm font-semibold text-white">Period 1</h4><p class="text-xs text-gray-400">Morning Session</p></div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-cyan-300 bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">08:50 – 09:40</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xs font-mono">P2</div>
+                                    <div><h4 class="text-sm font-semibold text-white">Period 2</h4><p class="text-xs text-gray-400">Morning Session</p></div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-cyan-300 bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">09:40 – 10:25</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xs font-mono">P3</div>
+                                    <div><h4 class="text-sm font-semibold text-white">Period 3</h4><p class="text-xs text-gray-400">Pre-Break Session</p></div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-cyan-300 bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">10:25 – 11:10</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-3 flex items-center justify-between border-amber-500/30 bg-amber-950/10">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-amber-900/50 flex items-center justify-center text-amber-300 font-bold text-xs">☕</div>
+                                    <div><h4 class="text-sm font-semibold text-amber-300">Morning Break</h4><p class="text-xs text-gray-400">Cafeteria</p></div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-amber-300 bg-black/30 px-2.5 py-1 rounded-lg border border-amber-500/20">11:10 – 11:25</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xs font-mono">P4</div>
+                                    <div><h4 class="text-sm font-semibold text-white">Period 4</h4><p class="text-xs text-gray-400">Midday Session</p></div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-cyan-300 bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">11:25 – 12:15</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xs font-mono">P5</div>
+                                    <div><h4 class="text-sm font-semibold text-white">Period 5</h4><p class="text-xs text-gray-400">Afternoon Session</p></div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-cyan-300 bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">12:15 – 13:05</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xs font-mono">P6</div>
+                                    <div><h4 class="text-sm font-semibold text-white">Period 6</h4><p class="text-xs text-gray-400">Afternoon Session</p></div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-cyan-300 bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">13:05 – 13:55</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xs font-mono">P7</div>
+                                    <div><h4 class="text-sm font-semibold text-white">Period 7</h4><p class="text-xs text-gray-400">Late Afternoon</p></div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-cyan-300 bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">13:55 – 14:35</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xs font-mono">P8</div>
+                                    <div><h4 class="text-sm font-semibold text-white">Period 8</h4><p class="text-xs text-gray-400">End of Day</p></div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-cyan-300 bg-black/30 px-2.5 py-1 rounded-lg border border-cyan-500/20">14:35 – 15:15</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'settings') {
+                mainContainer.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="glass-card rounded-2xl p-5 border border-purple-500/30">
+                            <h2 class="text-lg font-bold text-white flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-gear text-purple-400"></i> Portal Settings
+                            </h2>
+                            <p class="text-xs text-gray-400">Manage profile data and application preferences.</p>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-4 space-y-3">
+                            <h3 class="text-sm font-bold text-white">Student Information</h3>
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">Full Name</label>
+                                    <input type="text" value="Sudais Nyunga" class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-xs text-gray-400 mb-1">Class Code</label>
+                                        <input type="text" value="4D1" class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-gray-400 mb-1">Year Group</label>
+                                        <input type="text" value="S4" class="w-full bg-cyber-bg border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-4 space-y-3">
+                            <h3 class="text-sm font-bold text-white">Data Management</h3>
+                            <div class="space-y-2">
+                                <button onclick="resetToDefaultData()" class="w-full bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 py-2.5 rounded-xl text-xs font-semibold transition flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    <span>Reset Timetable to Default</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Modal Controls
+        function openAddClassModal() {
+            document.getElementById('addClassModal').classList.remove('hidden');
+            document.getElementById('addClassModal').classList.add('flex');
+        }
+
+        function closeAddClassModal() {
+            document.getElementById('addClassModal').classList.remove('flex');
+            document.getElementById('addClassModal').classList.add('hidden');
+        }
+
+        // Handle Add New Class Form Submission
+        function handleAddNewClass(event) {
+            event.preventDefault();
+            const day = document.getElementById('newClassDay').value;
+            const start = document.getElementById('newClassStart').value;
+            const end = document.getElementById('newClassEnd').value;
+            const title = document.getElementById('newClassTitle').value;
+            const teacher = document.getElementById('newClassTeacher').value;
+            const room = document.getElementById('newClassRoom').value;
+            const type = document.getElementById('newClassType').value;
+
+            const newClass = {
+                id: 'c_' + Math.random().toString(36.substr(2, 9)),
+                start,
+                end,
+                title,
+                teacher,
+                room,
+                type
+            };
+
+            if (!timetableData[day]) {
+                timetableData[day] = [];
+            }
+            timetableData[day].push(newClass);
+            timetableData[day].sort((a, b) => a.start.localeCompare(b.start));
+
+            localStorage.setItem('sudais_timetable_v2', JSON.stringify(timetableData));
+            closeAddClassModal();
+            
+            if (currentDay === day) {
+                renderTimetable();
+            }
+
+            showToast("Class successfully added!");
+            document.getElementById('addClassForm').reset();
+        }
+
+        // Delete Class
+        function deleteClass(classId) {
+            for (let day in timetableData) {
+                timetableData[day] = timetableData[day].filter(c => c.id !== classId);
+            }
+            localStorage.setItem('sudais_timetable_v2', JSON.stringify(timetableData));
+            renderTimetable();
+            showToast("Class removed successfully");
+        }
+
+        // Reset to Default Data
+        function resetToDefaultData() {
+            timetableData = JSON.parse(JSON.stringify(defaultTimetable));
+            localStorage.setItem('sudais_timetable_v2', JSON.stringify(timetableData));
+            renderTimetable();
+            showToast("Timetable reset to defaults");
+        }
+
+        // Toast Notification Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toastMessage');
+            msgEl.innerText = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
