@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sudais's Elite Timetable</title>
+  <title>Sudais's Vaporwave Mint Timetable</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -11,17 +11,15 @@
       theme: {
         extend: {
           colors: {
-            elite: {
-              bg: '#090d16',
-              surface: '#111827',
-              surfaceHover: '#1f2937',
-              accent: '#3b82f6',
-              accentGlow: 'rgba(59, 130, 246, 0.4)',
-              purple: '#8b5cf6',
+            vapor: {
+              bg: '#05020a',
+              surface: '#0f071c',
+              border: 'rgba(168, 85, 247, 0.2)',
+              mint: '#00ffcc',
+              mintGlow: 'rgba(0, 255, 204, 0.4)',
+              violet: '#a855f7',
               pink: '#ec4899',
-              emerald: '#10b981',
-              amber: '#f59e0b',
-              border: '#1e293b'
+              cyan: '#38bdf8'
             }
           }
         }
@@ -29,68 +27,98 @@
     }
   </script>
   <style>
-    body { background-color: #090d16; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
-    .glass-panel { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.07); }
-    .glass-pill { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.06); }
-    .glow-blue { box-shadow: 0 0 25px rgba(59, 130, 246, 0.2); }
+    body {
+      background: radial-gradient(circle at 50% 0%, #15092a 0%, #05020a 70%);
+      color: #f3f4f6;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .glass-vapor {
+      background: rgba(15, 7, 28, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(0, 255, 204, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glow-mint {
+      box-shadow: 0 0 25px rgba(0, 255, 204, 0.25);
+    }
+    .glow-violet {
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.25);
+    }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen pb-28 selection:bg-blue-500 selection:text-white">
+<body class="min-h-screen pb-28 selection:bg-[#00ffcc] selection:text-black">
 
-  <!-- Header Section -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-white/10 px-4 py-3.5">
+  <header class="sticky top-0 z-50 glass-vapor border-b border-[#00ffcc]/20 px-4 py-3">
     <div class="max-w-md mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 p-0.5 shadow-lg glow-blue flex items-center justify-center">
-          <div class="w-full h-full bg-[#090d16] rounded-[14px] flex items-center justify-center font-black text-blue-400 text-sm tracking-wider">SN</div>
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#00ffcc] via-[#38bdf8] to-[#a855f7] p-0.5 shadow-lg glow-mint flex items-center justify-center">
+          <div class="w-full h-full bg-[#05020a] rounded-[14px] flex items-center justify-center font-black text-[#00ffcc] text-sm tracking-wider">SN</div>
         </div>
         <div>
           <h1 class="text-sm font-extrabold text-white tracking-wide">Sudais Nyunga</h1>
-          <p class="text-[11px] text-blue-400 font-medium">Group 4D1 • Stage S4</p>
+          <p class="text-[11px] text-[#00ffcc] font-medium">Group 4D1 • Stage S4</p>
         </div>
       </div>
-      <div class="glass-pill px-3 py-1.5 rounded-xl text-right">
-        <span class="text-[9px] uppercase tracking-widest text-slate-400 block font-bold">Hours</span>
-        <span class="text-xs font-mono font-bold text-slate-200">08:50 - 15:15</span>
+      <div class="glass-pill px-3 py-1.5 rounded-xl text-right border-[#00ffcc]/20">
+        <span class="text-[9px] uppercase tracking-widest text-slate-400 block font-bold">Current Time</span>
+        <span id="header-clock" class="text-xs font-mono font-bold text-[#00ffcc]">00:00:00</span>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
   <main class="max-w-md mx-auto px-4 pt-4">
 
-    <!-- Day Navigation Selector -->
+    <div class="glass-vapor rounded-2xl p-4 mb-4 border border-[#00ffcc]/30 bg-gradient-to-r from-[#00ffcc]/10 via-[#a855f7]/10 to-[#ec4899]/10 shadow-xl relative overflow-hidden">
+      <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-[#00ffcc]/10 rounded-full blur-xl pointer-events-none"></div>
+      <div class="flex items-center justify-between relative z-10">
+        <div>
+          <div class="flex items-center gap-1.5 mb-0.5">
+            <span class="w-2 h-2 rounded-full bg-[#00ffcc] animate-pulse"></span>
+            <span id="status-badge" class="text-[10px] font-extrabold uppercase tracking-widest text-[#00ffcc]">Live Period Status</span>
+          </div>
+          <h3 id="current-class-title" class="text-xs font-bold text-white">Loading schedule...</h3>
+        </div>
+        <div class="text-right">
+          <span class="text-[9px] uppercase tracking-widest text-slate-400 block font-bold">Time Remaining</span>
+          <span id="period-countdown" class="text-sm font-mono font-black text-[#a855f7]">--:--</span>
+        </div>
+      </div>
+    </div>
+
     <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
-      <button onclick="switchDay('Monday')" id="tab-Monday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap bg-blue-600 text-white shadow-lg shadow-blue-600/30">Monday</button>
+      <button onclick="switchDay('Monday')" id="tab-Monday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap bg-[#00ffcc] text-black shadow-lg shadow-[#00ffcc]/20">Monday</button>
       <button onclick="switchDay('Tuesday')" id="tab-Tuesday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white">Tuesday</button>
       <button onclick="switchDay('Wednesday')" id="tab-Wednesday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white">Wednesday</button>
       <button onclick="switchDay('Thursday')" id="tab-Thursday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white">Thursday</button>
       <button onclick="switchDay('Friday')" id="tab-Friday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white">Friday</button>
     </div>
 
-    <!-- Active Schedule Info Banner -->
     <div class="flex items-center justify-between mb-4 px-1">
       <div>
         <h2 id="active-day-title" class="text-base font-extrabold text-white tracking-tight">Monday Timeline</h2>
         <span id="active-day-count" class="text-xs text-slate-400 font-medium">9 periods scheduled</span>
       </div>
-      <div class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono text-emerald-400 font-bold border border-emerald-500/20 bg-emerald-500/10">
+      <div class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono text-[#00ffcc] font-bold border border-[#00ffcc]/20 bg-[#00ffcc]/10">
         ACTIVE
       </div>
     </div>
 
-    <!-- Timeline List Container -->
     <div id="timeline-container" class="space-y-3">
       <!-- Injected via JavaScript -->
     </div>
 
   </main>
 
-  <!-- Bottom Floating Navigation Tabs -->
-  <nav class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-panel rounded-2xl p-2 flex items-center justify-around shadow-2xl z-50 border border-white/10">
-    <button onclick="switchView('timetable')" id="nav-timetable" class="flex flex-col items-center gap-1 text-blue-400 py-1.5 px-6 transition-colors">
+  <nav class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-vapor rounded-2xl p-2 flex items-center justify-around shadow-2xl z-50 border border-[#00ffcc]/20">
+    <button onclick="switchView('timetable')" id="nav-timetable" class="flex flex-col items-center gap-1 text-[#00ffcc] py-1.5 px-6 transition-colors">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
       <span class="text-[10px] font-bold tracking-wide">Timetable</span>
     </button>
@@ -162,7 +190,6 @@
     let currentDay = 'Monday';
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     
-    // Auto detect today if weekday
     const jsDay = new Date().getDay();
     if (jsDay >= 1 && jsDay <= 5) {
       currentDay = days[jsDay - 1];
@@ -172,7 +199,7 @@
       currentDay = day;
       document.querySelectorAll('.day-tab').forEach(btn => {
         if(btn.id === `tab-${day}`) {
-          btn.className = "day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap bg-blue-600 text-white shadow-lg shadow-blue-600/30";
+          btn.className = "day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap bg-[#00ffcc] text-black shadow-lg shadow-[#00ffcc]/20";
         } else {
           btn.className = "day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white";
         }
@@ -193,29 +220,29 @@
         const card = document.createElement('div');
         
         if (isBreak) {
-          card.className = "glass-panel rounded-2xl p-3.5 border border-amber-500/30 bg-amber-500/5 flex items-center justify-between";
+          card.className = "glass-vapor rounded-2xl p-3.5 border border-pink-500/30 bg-pink-500/5 flex items-center justify-between";
           card.innerHTML = `
             <div class="flex items-center gap-3">
-              <div class="w-16 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-center font-mono text-[11px] font-bold">
+              <div class="w-16 py-2 rounded-xl bg-pink-500/20 text-pink-300 border border-pink-500/30 text-center font-mono text-[11px] font-bold">
                 ${item.period}
               </div>
               <div>
-                <h3 class="text-xs font-bold text-amber-200">${item.name}</h3>
-                <p class="text-[10px] text-amber-400/80 mt-0.5">${item.teacher} • ${item.room}</p>
+                <h3 class="text-xs font-bold text-pink-200">${item.name}</h3>
+                <p class="text-[10px] text-pink-400/80 mt-0.5">${item.teacher} • ${item.room}</p>
               </div>
             </div>
-            <span class="text-[11px] font-mono font-semibold text-amber-300/90">${item.time}</span>
+            <span class="text-[11px] font-mono font-semibold text-pink-300/90">${item.time}</span>
           `;
         } else {
-          card.className = "glass-panel rounded-2xl p-4 flex items-center justify-between transition-all hover:border-blue-500/40";
+          card.className = "glass-vapor rounded-2xl p-4 flex items-center justify-between transition-all hover:border-[#00ffcc]/40";
           card.innerHTML = `
             <div class="flex items-center gap-3.5">
-              <div class="w-16 py-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 text-center font-mono text-[11px] font-bold shadow-inner">
+              <div class="w-16 py-2.5 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/20 text-[#00ffcc] text-center font-mono text-[11px] font-bold shadow-inner">
                 ${item.period}
               </div>
               <div>
                 <h3 class="text-xs font-bold text-white tracking-wide">${item.name}</h3>
-                <p class="text-[11px] text-slate-400 mt-0.5 font-medium">${item.teacher} • <span class="text-blue-400 font-semibold">${item.room}</span></p>
+                <p class="text-[11px] text-slate-400 mt-0.5 font-medium">${item.teacher} • <span class="text-[#00ffcc] font-semibold">${item.room}</span></p>
               </div>
             </div>
             <div class="text-right">
@@ -233,11 +260,11 @@
       const container = document.getElementById('timeline-container');
       
       if (view === 'timetable') {
-        tBtn.className = "flex flex-col items-center gap-1 text-blue-400 py-1.5 px-6 transition-colors";
+        tBtn.className = "flex flex-col items-center gap-1 text-[#00ffcc] py-1.5 px-6 transition-colors";
         bBtn.className = "flex flex-col items-center gap-1 text-slate-400 hover:text-white py-1.5 px-6 transition-colors";
         renderTimeline(currentDay);
       } else {
-        bBtn.className = "flex flex-col items-center gap-1 text-blue-400 py-1.5 px-6 transition-colors";
+        bBtn.className = "flex flex-col items-center gap-1 text-[#00ffcc] py-1.5 px-6 transition-colors";
         tBtn.className = "flex flex-col items-center gap-1 text-slate-400 hover:text-white py-1.5 px-6 transition-colors";
         document.getElementById('active-day-title').innerText = "Bell Schedule";
         document.getElementById('active-day-count').innerText = "Daily standard times";
@@ -257,19 +284,92 @@
         container.innerHTML = '';
         bells.forEach(b => {
           const card = document.createElement('div');
-          card.className = "glass-panel rounded-2xl p-4 flex items-center justify-between";
+          card.className = "glass-vapor rounded-2xl p-4 flex items-center justify-between";
           card.innerHTML = `
             <span class="text-xs font-bold text-white">${b.period}</span>
-            <span class="text-xs font-mono font-semibold text-blue-400">${b.time}</span>
+            <span class="text-xs font-mono font-semibold text-[#00ffcc]">${b.time}</span>
           `;
           container.appendChild(card);
         });
       }
     }
 
-    // Initial render
+    // Real-time clock and live period countdown engine
+    function updateLiveTimings() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      document.getElementById('header-clock').innerText = timeString;
+
+      const currentDayIndex = now.getDay();
+      const titleEl = document.getElementById('current-class-title');
+      const countdownEl = document.getElementById('period-countdown');
+      const badgeEl = document.getElementById('status-badge');
+
+      if (currentDayIndex < 1 || currentDayIndex > 5) {
+        badgeEl.innerText = "WEEKEND";
+        titleEl.innerText = "No classes today. Enjoy your break!";
+        countdownEl.innerText = "FREE";
+        return;
+      }
+
+      const todayName = days[currentDayIndex - 1];
+      const scheduleList = fullSchedule[todayName];
+      
+      const currentTimeInMins = hours * 60 + minutes;
+      let activeItem = null;
+      let nextItem = null;
+
+      for (let i = 0; i < scheduleList.length; i++) {
+        const item = scheduleList[i];
+        const [startStr, endStr] = item.time.split(' - ');
+        const [sh, sm] = startStr.split(':').map(Number);
+        const [eh, em] = endStr.split(':').map(Number);
+        const startTotal = sh * 60 + sm;
+        const endTotal = eh * 60 + em;
+
+        if (currentTimeInMins >= startTotal && currentTimeInMins < endTotal) {
+          activeItem = { item, endTotal };
+          break;
+        } else if (currentTimeInMins < startTotal) {
+          nextItem = item;
+          break;
+        }
+      }
+
+      if (activeItem) {
+        badgeEl.innerText = `NOW (${activeItem.item.period})`;
+        titleEl.innerText = `${activeItem.item.name} (${activeItem.item.room})`;
+        
+        const endTimeParts = activeItem.item.time.split(' - ')[1].split(':').map(Number);
+        const endTotalSecs = endTimeParts[0] * 3600 + endTimeParts[1] * 60;
+        const currentTotalSecs = hours * 3600 + minutes * 60 + seconds;
+        const diffSecs = endTotalSecs - currentTotalSecs;
+
+        if (diffSecs > 0) {
+          const remMins = Math.floor(diffSecs / 60);
+          const remSecs = diffSecs % 60;
+          countdownEl.innerText = `${remMins.toString().padStart(2, '0')}m ${remSecs.toString().padStart(2, '0')}s left`;
+        } else {
+          countdownEl.innerText = "Ending...";
+        }
+      } else if (nextItem) {
+        badgeEl.innerText = "UPCOMING";
+        titleEl.innerText = `Next: ${nextItem.name} at ${nextItem.time.split(' - ')[0]}`;
+        countdownEl.innerText = "Waiting";
+      } else {
+        badgeEl.innerText = "FINISHED";
+        titleEl.innerText = "All school periods completed for today!";
+        countdownEl.innerText = "00:00";
+      }
+    }
+
     switchDay(currentDay);
+    setInterval(updateLiveTimings, 1000);
+    updateLiveTimings();
   </script>
 </body>
 </html>
-
