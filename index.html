@@ -43,9 +43,12 @@
           <p class="text-xs text-slate-400">S4 • 08:50 - 15:15</p>
         </div>
       </div>
-      <div class="flex items-center gap-2 bg-purple-950/40 border border-purple-500/30 px-3 py-1.5 rounded-full">
-        <span class="pulse-dot"></span>
-        <span id="live-status" class="text-xs font-medium text-purple-200">School Active</span>
+      <div class="flex items-center gap-2">
+        <button onclick="resetToDefaultData()" title="Reset to Defaults" class="text-[10px] bg-red-950/60 border border-red-500/30 text-red-300 px-2 py-1.5 rounded-lg hover:bg-red-900/60 transition-colors">Reset</button>
+        <div class="flex items-center gap-2 bg-purple-950/40 border border-purple-500/30 px-3 py-1.5 rounded-full">
+          <span class="pulse-dot"></span>
+          <span id="live-status" class="text-xs font-medium text-purple-200">Active</span>
+        </div>
       </div>
     </div>
 
@@ -98,15 +101,53 @@
     </button>
   </nav>
 
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="cyber-card rounded-2xl p-5 w-full max-w-sm border border-purple-500/30">
+      <h3 class="text-sm font-bold text-white mb-4">Edit Class Details</h3>
+      <input type="hidden" id="edit-day">
+      <input type="hidden" id="edit-index">
+      
+      <div class="space-y-3">
+        <div>
+          <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Subject / Class Name</label>
+          <input type="text" id="edit-name" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Teacher</label>
+          <input type="text" id="edit-teacher" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Room</label>
+          <input type="text" id="edit-room" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Start Time</label>
+            <input type="text" id="edit-start" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-purple-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">End Time</label>
+            <input type="text" id="edit-end" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-purple-500">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mt-5">
+        <button onclick="closeEditModal()" class="flex-1 bg-slate-800 text-slate-300 py-2 rounded-xl text-xs font-semibold hover:bg-slate-700 transition-colors">Cancel</button>
+        <button onclick="saveClassEdit()" class="flex-1 bg-purple-600 text-white py-2 rounded-xl text-xs font-semibold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-600/30">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Strict Schedule: Mathematics = Mr McLarty everyday. Period 7 = Mr Fulton (Mon-Thu), Mr McGimpsy (Fri).
-    const scheduleData = {
+    const defaultScheduleData = {
       Monday: [
         { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '09:40', end: '10:25', name: 'Period 2', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Period 4 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '11:25', end: '12:15', name: 'Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
         { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
         { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Room', type: 'class' },
@@ -114,7 +155,7 @@
       ],
       Tuesday: [
         { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'Room', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'Period 2 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '09:40', end: '10:25', name: 'Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
         { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
         { start: '11:25', end: '12:15', name: 'Period 4', teacher: 'Teacher', room: 'Room', type: 'class' },
@@ -128,7 +169,7 @@
         { start: '09:40', end: '10:25', name: 'Period 2', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Period 4 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '11:25', end: '12:15', name: 'Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
         { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
         { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Room', type: 'class' },
@@ -136,7 +177,7 @@
       ],
       Thursday: [
         { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'Room', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'Period 2 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '09:40', end: '10:25', name: 'Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
         { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
         { start: '11:25', end: '12:15', name: 'Period 4', teacher: 'Teacher', room: 'Room', type: 'class' },
@@ -146,7 +187,7 @@
         { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr Fulton', room: 'Room', type: 'class' }
       ],
       Friday: [
-        { start: '08:50', end: '09:40', name: 'Period 1 - Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
+        { start: '08:50', end: '09:40', name: 'Mathematics', teacher: 'Mr McLarty', room: 'Room', type: 'class' },
         { start: '09:40', end: '10:25', name: 'Period 2', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Room', type: 'class' },
         { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
@@ -158,6 +199,8 @@
       ]
     };
 
+    // Load schedule from localStorage or fallback to defaults
+    let scheduleData = JSON.parse(localStorage.getItem('sudais_schedule')) || defaultScheduleData;
     let activeDay = 'Monday';
 
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -189,7 +232,7 @@
 
       listContainer.innerHTML = '';
 
-      classes.forEach((item) => {
+      classes.forEach((item, index) => {
         const isBreak = item.type === 'break';
         const card = document.createElement('div');
         card.className = `cyber-card rounded-2xl p-4 flex items-center justify-between transition-all ${isBreak ? 'border-amber-500/30 bg-amber-950/10' : ''}`;
@@ -207,12 +250,61 @@
               <p class="text-xs text-slate-400 mt-0.5">${item.teacher} • <span class="text-cyan-400">${item.room}</span></p>
             </div>
           </div>
-          <div class="text-right">
-            <span class="text-xs font-mono text-slate-500">${item.end}</span>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <span class="text-xs font-mono text-slate-500">${item.end}</span>
+            </div>
+            <button onclick="openEditModal('${activeDay}', ${index})" class="p-2 rounded-xl bg-purple-950/40 border border-purple-500/20 text-purple-300 hover:bg-purple-900/60 transition-colors" title="Edit Class">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
           </div>
         `;
         listContainer.appendChild(card);
       });
+    }
+
+    function openEditModal(day, index) {
+      const item = scheduleData[day][index];
+      document.getElementById('edit-day').value = day;
+      document.getElementById('edit-index').value = index;
+      document.getElementById('edit-name').value = item.name;
+      document.getElementById('edit-teacher').value = item.teacher;
+      document.getElementById('edit-room').value = item.room;
+      document.getElementById('edit-start').value = item.start;
+      document.getElementById('edit-end').value = item.end;
+      
+      document.getElementById('edit-modal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.add('hidden');
+    }
+
+    function saveClassEdit() {
+      const day = document.getElementById('edit-day').value;
+      const index = parseInt(document.getElementById('edit-index').value);
+
+      scheduleData[day][index].name = document.getElementById('edit-name').value;
+      scheduleData[day][index].teacher = document.getElementById('edit-teacher').value;
+      scheduleData[day][index].room = document.getElementById('edit-room').value;
+      scheduleData[day][index].start = document.getElementById('edit-start').value;
+      scheduleData[day][index].end = document.getElementById('edit-end').value;
+
+      // Save to localStorage so edits persist on phone/browser
+      localStorage.setItem('sudais_schedule', JSON.stringify(scheduleData));
+
+      closeEditModal();
+      renderTimetable();
+      updateCountdown();
+    }
+
+    function resetToDefaultData() {
+      if(confirm("Reset all classes back to the original default schedule?")) {
+        localStorage.removeItem('sudais_schedule');
+        scheduleData = JSON.parse(JSON.stringify(defaultScheduleData));
+        renderTimetable();
+        updateCountdown();
+      }
     }
 
     function updateCountdown() {
@@ -225,7 +317,7 @@
       const statusEl = document.getElementById('live-status');
 
       if (!scheduleData[currentDayStr] || currentDayStr === 'Saturday' || currentDayStr === 'Sunday') {
-        statusEl.innerText = "Weekend / No School";
+        statusEl.innerText = "Weekend";
         titleEl.innerText = "Enjoy your weekend!";
         timerEl.innerText = "CLOSED";
         return;
@@ -244,7 +336,7 @@
       }
 
       if (nextClass) {
-        statusEl.innerText = "School Active";
+        statusEl.innerText = "Active";
         titleEl.innerText = `Next: ${nextClass.name} (${nextClass.teacher})`;
 
         const [sh, sm] = nextClass.start.split(':').map(Number);
@@ -258,8 +350,8 @@
 
         timerEl.innerText = `${h > 0 ? h + 'h ' : ''}${m.toString().padStart(2, '0')}m ${s.toString().padStart(2, '0')}s`;
       } else {
-        statusEl.innerText = "School Day Ended";
-        titleEl.innerText = "All Classes Finished";
+        statusEl.innerText = "Finished";
+        titleEl.innerText = "All Classes Done";
         timerEl.innerText = "00:00:00";
       }
     }
