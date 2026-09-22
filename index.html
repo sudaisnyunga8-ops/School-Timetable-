@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sudais's Cyber Timetable</title>
+  <title>Sudais's Elite Timetable</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -11,500 +11,265 @@
       theme: {
         extend: {
           colors: {
-            cyber: { bg: '#0c0a1d', card: '#15122c', cardHover: '#1e1a3f', purple: '#8b5cf6', neonPurple: '#a855f7', cyan: '#06b6d4', pink: '#ec4899', darkBorder: 'rgba(255, 255, 255, 0.08)' }
+            elite: {
+              bg: '#090d16',
+              surface: '#111827',
+              surfaceHover: '#1f2937',
+              accent: '#3b82f6',
+              accentGlow: 'rgba(59, 130, 246, 0.4)',
+              purple: '#8b5cf6',
+              pink: '#ec4899',
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              border: '#1e293b'
+            }
           }
         }
       }
     }
   </script>
   <style>
-    body { background-color: #0c0a1d; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
-    .glass-header { background: rgba(12, 10, 29, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-    .cyber-card { background: linear-gradient(135deg, rgba(21, 18, 44, 0.9), rgba(13, 11, 31, 0.95)); border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); }
-    .cyber-card:hover { border-color: rgba(139, 92, 246, 0.3); }
-    .neon-glow { box-shadow: 0 0 20px rgba(139, 92, 246, 0.25); }
-    .pulse-dot { width: 8px; height: 8px; background-color: #06b6d4; border-radius: 50%; box-shadow: 0 0 10px #06b6d4; animation: pulse 2s infinite; }
-    @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.25); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
+    body { background-color: #090d16; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
+    .glass-panel { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.07); }
+    .glass-pill { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.06); }
+    .glow-blue { box-shadow: 0 0 25px rgba(59, 130, 246, 0.2); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen pb-24">
+<body class="min-h-screen pb-28 selection:bg-blue-500 selection:text-white">
 
-  <!-- Top Sticky Header -->
-  <header class="glass-header sticky top-0 z-50 px-4 py-3 flex flex-col gap-2">
-    <div class="flex items-center justify-between">
+  <!-- Header Section -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-white/10 px-4 py-3.5">
+    <div class="max-w-md mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 p-0.5 flex items-center justify-center neon-glow">
-          <div id="user-initials" class="w-full h-full bg-cyber-bg rounded-[10px] flex items-center justify-center font-black text-cyan-400 text-sm">SN</div>
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 p-0.5 shadow-lg glow-blue flex items-center justify-center">
+          <div class="w-full h-full bg-[#090d16] rounded-[14px] flex items-center justify-center font-black text-blue-400 text-sm tracking-wider">SN</div>
         </div>
         <div>
-          <h1 id="app-username" class="text-sm font-bold tracking-wide text-white">Sudais Nyunga</h1>
-          <p id="app-subtitle" class="text-xs text-slate-400">S4 • 08:50 - 15:15</p>
+          <h1 class="text-sm font-extrabold text-white tracking-wide">Sudais Nyunga</h1>
+          <p class="text-[11px] text-blue-400 font-medium">Group 4D1 • Stage S4</p>
         </div>
       </div>
-      <div class="flex items-center gap-1.5">
-        <button onclick="openProfileModal()" class="text-[10px] bg-purple-950/60 border border-purple-500/30 text-purple-200 px-2.5 py-1.5 rounded-lg hover:bg-purple-900/60 transition-colors">Profile</button>
-        <button onclick="resetToDefaultData()" class="text-[10px] bg-red-950/60 border border-red-500/30 text-red-300 px-2.5 py-1.5 rounded-lg hover:bg-red-900/60 transition-colors">Reset</button>
-      </div>
-    </div>
-
-    <!-- Live Countdown Banner -->
-    <div class="cyber-card rounded-xl p-3 flex items-center justify-between border border-purple-500/20 bg-gradient-to-r from-purple-900/20 to-cyan-900/20">
-      <div class="flex flex-col">
-        <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Next Up / Status</span>
-        <span id="next-class-title" class="text-xs font-semibold text-white">Loading schedule...</span>
-      </div>
-      <div class="text-right">
-        <span id="countdown-timer" class="text-sm font-mono font-bold text-purple-300">--:--:--</span>
+      <div class="glass-pill px-3 py-1.5 rounded-xl text-right">
+        <span class="text-[9px] uppercase tracking-widest text-slate-400 block font-bold">Hours</span>
+        <span class="text-xs font-mono font-bold text-slate-200">08:50 - 15:15</span>
       </div>
     </div>
   </header>
 
-  <!-- Main Content Container -->
+  <!-- Main Container -->
   <main class="max-w-md mx-auto px-4 pt-4">
 
-    <!-- Day Selector Tabs -->
-    <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-3">
-      <button onclick="setDay('Monday')" id="btn-Monday" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap bg-purple-600 text-white shadow-lg shadow-purple-600/30">Monday</button>
-      <button onclick="setDay('Tuesday')" id="btn-Tuesday" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap bg-cyber-card text-slate-400 border border-slate-800">Tuesday</button>
-      <button onclick="setDay('Wednesday')" id="btn-Wednesday" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap bg-cyber-card text-slate-400 border border-slate-800">Wednesday</button>
-      <button onclick="setDay('Thursday')" id="btn-Thursday" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap bg-cyber-card text-slate-400 border border-slate-800">Thursday</button>
-      <button onclick="setDay('Friday')" id="btn-Friday" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap bg-cyber-card text-slate-400 border border-slate-800">Friday</button>
+    <!-- Day Navigation Selector -->
+    <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
+      <button onclick="switchDay('Monday')" id="tab-Monday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap bg-blue-600 text-white shadow-lg shadow-blue-600/30">Monday</button>
+      <button onclick="switchDay('Tuesday')" id="tab-Tuesday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white">Tuesday</button>
+      <button onclick="switchDay('Wednesday')" id="tab-Wednesday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white">Wednesday</button>
+      <button onclick="switchDay('Thursday')" id="tab-Thursday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white">Thursday</button>
+      <button onclick="switchDay('Friday')" id="tab-Friday" class="day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white">Friday</button>
     </div>
 
-    <!-- Active Day Header Display & Add Class Button -->
-    <div class="flex items-center justify-between mb-3 px-1">
+    <!-- Active Schedule Info Banner -->
+    <div class="flex items-center justify-between mb-4 px-1">
       <div>
-        <h2 id="current-day-label" class="text-base font-bold text-slate-200">Monday Schedule</h2>
-        <span id="class-count" class="text-xs text-slate-400">0 classes</span>
+        <h2 id="active-day-title" class="text-base font-extrabold text-white tracking-tight">Monday Timeline</h2>
+        <span id="active-day-count" class="text-xs text-slate-400 font-medium">9 periods scheduled</span>
       </div>
-      <button onclick="openAddClassModal()" class="bg-purple-600/30 border border-purple-500/40 text-purple-300 px-3 py-1.5 rounded-xl text-xs font-semibold hover:bg-purple-600 hover:text-white transition-all shadow-md">+ Add Class</button>
+      <div class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono text-emerald-400 font-bold border border-emerald-500/20 bg-emerald-500/10">
+        ACTIVE
+      </div>
     </div>
 
-    <!-- Timetable Cards List -->
-    <div id="timetable-list" class="flex flex-col gap-3">
+    <!-- Timeline List Container -->
+    <div id="timeline-container" class="space-y-3">
       <!-- Injected via JavaScript -->
     </div>
 
   </main>
 
-  <!-- Floating Bottom Navigation -->
-  <nav class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-header rounded-2xl p-2 flex items-center justify-around border border-white/10 shadow-2xl z-50">
-    <button onclick="switchTab('timetable')" id="nav-btn-timetable" class="flex flex-col items-center gap-1 text-cyan-400 py-1 px-4">
+  <!-- Bottom Floating Navigation Tabs -->
+  <nav class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-panel rounded-2xl p-2 flex items-center justify-around shadow-2xl z-50 border border-white/10">
+    <button onclick="switchView('timetable')" id="nav-timetable" class="flex flex-col items-center gap-1 text-blue-400 py-1.5 px-6 transition-colors">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-      <span class="text-[10px] font-medium">Timetable</span>
+      <span class="text-[10px] font-bold tracking-wide">Timetable</span>
     </button>
-    <button onclick="switchTab('bells')" id="nav-btn-bells" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white py-1 px-4 transition-colors">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v2m4.93 1.07l-1.41 1.41M20 12h2m-2.07 4.93l1.41 1.41M12 22v-2m-4.93-1.07l1.41-1.41M2 12H0m2.07-4.93L.66 5.66"/></svg>
-      <span class="text-[10px] font-medium">Bell Times</span>
+    <button onclick="switchView('bells')" id="nav-bells" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white py-1.5 px-6 transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span class="text-[10px] font-bold tracking-wide">Bell Times</span>
     </button>
   </nav>
 
-  <!-- Edit / Add Class Modal -->
-  <div id="edit-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="cyber-card rounded-2xl p-5 w-full max-w-sm border border-purple-500/30">
-      <h3 id="modal-title" class="text-sm font-bold text-white mb-4">Edit Class Details</h3>
-      <input type="hidden" id="edit-day">
-      <input type="hidden" id="edit-index">
-      
-      <div class="space-y-3">
-        <div>
-          <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Subject / Class Name</label>
-          <input type="text" id="edit-name" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
-        </div>
-        <div>
-          <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Teacher</label>
-          <input type="text" id="edit-teacher" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
-        </div>
-        <div>
-          <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Room</label>
-          <input type="text" id="edit-room" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Start Time</label>
-            <input type="text" id="edit-start" placeholder="08:50" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-purple-500">
-          </div>
-          <div>
-            <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">End Time</label>
-            <input type="text" id="edit-end" placeholder="09:40" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-purple-500">
-          </div>
-        </div>
-        <div>
-          <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Type</label>
-          <select id="edit-type" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
-            <option value="class">Regular Class</option>
-            <option value="break">Break / Lunch</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="flex gap-2 mt-5">
-        <button onclick="closeEditModal()" class="flex-1 bg-slate-800 text-slate-300 py-2 rounded-xl text-xs font-semibold hover:bg-slate-700 transition-colors">Cancel</button>
-        <button onclick="saveClassData()" class="flex-1 bg-purple-600 text-white py-2 rounded-xl text-xs font-semibold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-600/30">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Profile Settings Modal -->
-  <div id="profile-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="cyber-card rounded-2xl p-5 w-full max-w-sm border border-purple-500/30">
-      <h3 class="text-sm font-bold text-white mb-4">Edit Profile Info</h3>
-      
-      <div class="space-y-3">
-        <div>
-          <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Full Name</label>
-          <input type="text" id="profile-name-input" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
-        </div>
-        <div>
-          <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Subtitle / Year Level / Hours</label>
-          <input type="text" id="profile-sub-input" class="w-full bg-cyber-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
-        </div>
-      </div>
-
-      <div class="flex gap-2 mt-5">
-        <button onclick="closeProfileModal()" class="flex-1 bg-slate-800 text-slate-300 py-2 rounded-xl text-xs font-semibold hover:bg-slate-700 transition-colors">Cancel</button>
-        <button onclick="saveProfileData()" class="flex-1 bg-purple-600 text-white py-2 rounded-xl text-xs font-semibold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-600/30">Save Profile</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    const defaultProfile = {
-      name: "Sudais Nyunga",
-      sub: "S4 • 08:50 - 15:15",
-      initials: "SN"
-    };
-
-    const defaultScheduleData = {
+    const fullSchedule = {
       Monday: [
-        { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'F24', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'Period 2', teacher: 'Teacher', room: 'P/E', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'S23', type: 'class' },
-        { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'S13', type: 'class' },
-        { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Sc4', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr Fulton', room: 'E2', type: 'class' }
+        { time: '08:50 - 09:40', period: 'Period 1', name: 'English – CfE', teacher: 'Mr McGeary', room: 'F12', type: 'class' },
+        { time: '09:40 - 10:25', period: 'Period 2', name: 'Physical Education – CfE', teacher: 'Mr McLarty', room: 'P/E', type: 'class' },
+        { time: '10:25 - 11:10', period: 'Period 3', name: 'Personal & Social Education', teacher: 'Ms Looker', room: 'S15', type: 'class' },
+        { time: '11:10 - 11:25', period: 'Break', name: 'Morning Break', teacher: 'Cafeteria', room: 'Break', type: 'break' },
+        { time: '11:25 - 12:15', period: 'Period 4', name: 'Biology – CfE', teacher: 'Mrs Cullen', room: 'S4', type: 'class' },
+        { time: '12:15 - 13:05', period: 'Period 5', name: 'Administration – CfE', teacher: 'Miss Kennedy', room: 'F22', type: 'class' },
+        { time: '13:05 - 13:45', period: 'Lunch', name: 'Lunch Break', teacher: 'Dining Hall', room: 'Break', type: 'break' },
+        { time: '13:45 - 14:30', period: 'Period 6', name: 'Mathematics – CfE', teacher: 'Mr McLarty', room: 'F3', type: 'class' },
+        { time: '14:30 - 15:15', period: 'Period 7', name: 'Modern Studies – CfE', teacher: 'Mr Kelly', room: 'S23', type: 'class' }
       ],
       Tuesday: [
-        { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'E2', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'H1', type: 'class' },
-        { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Period 4', teacher: 'Teacher', room: 'Sc1', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'IT1', type: 'class' },
-        { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'A1', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr Fulton', room: 'S10', type: 'class' }
+        { time: '08:50 - 09:40', period: 'Period 1', name: 'Mathematics – CfE', teacher: 'Mr McLarty', room: 'F3', type: 'class' },
+        { time: '09:40 - 10:25', period: 'Period 2', name: 'Biology – CfE', teacher: 'Mrs Cullen', room: 'S4', type: 'class' },
+        { time: '10:25 - 11:10', period: 'Period 3', name: 'English – CfE', teacher: 'Mr McGeary', room: 'F12', type: 'class' },
+        { time: '11:10 - 11:25', period: 'Break', name: 'Morning Break', teacher: 'Cafeteria', room: 'Break', type: 'break' },
+        { time: '11:25 - 12:15', period: 'Period 4', name: 'Administration – CfE', teacher: 'Mr McDermott', room: 'F24', type: 'class' },
+        { time: '12:15 - 13:05', period: 'Period 5', name: 'Physical Education – CfE', teacher: 'Mr McGimpsey', room: 'P/E', type: 'class' },
+        { time: '13:05 - 13:45', period: 'Lunch', name: 'Lunch Break', teacher: 'Dining Hall', room: 'Break', type: 'break' },
+        { time: '13:45 - 14:30', period: 'Period 6', name: 'Business Management – CfE', teacher: 'Mr McDermott', room: 'F24', type: 'class' },
+        { time: '14:30 - 15:15', period: 'Period 7', name: 'Business Management – CfE', teacher: 'Mr McDermott', room: 'F24', type: 'class' }
       ],
       Wednesday: [
-        { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'F24', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'Period 2', teacher: 'Teacher', room: 'P/E', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'S23', type: 'class' },
-        { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'S13', type: 'class' },
-        { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Sc2', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr Fulton', room: 'F2', type: 'class' }
+        { time: '08:50 - 09:40', period: 'Period 1', name: 'Administration – CfE', teacher: 'Mr McDermott', room: 'F24', type: 'class' },
+        { time: '09:40 - 10:25', period: 'Period 2', name: 'PE Core – 5-14', teacher: 'Mr Fulton', room: 'P/E', type: 'class' },
+        { time: '10:25 - 11:10', period: 'Period 3', name: 'Modern Studies – CfE', teacher: 'Mr Kelly', room: 'S23', type: 'class' },
+        { time: '11:10 - 11:25', period: 'Break', name: 'Morning Break', teacher: 'Cafeteria', room: 'Break', type: 'break' },
+        { time: '11:25 - 12:15', period: 'Period 4', name: 'Mathematics – CfE', teacher: 'Mr McLarty', room: 'F3', type: 'class' },
+        { time: '12:15 - 13:05', period: 'Period 5', name: 'RE Core – 5-14', teacher: 'Mr Mackay', room: 'S13', type: 'class' },
+        { time: '13:05 - 13:45', period: 'Lunch', name: 'Lunch Break', teacher: 'Dining Hall', room: 'Break', type: 'break' },
+        { time: '13:45 - 14:30', period: 'Period 6', name: 'Biology – CfE', teacher: 'Mrs Cullen', room: 'S4', type: 'class' },
+        { time: '14:30 - 15:15', period: 'Period 7', name: 'English – CfE', teacher: 'Mr McGeary', room: 'F12', type: 'class' }
       ],
       Thursday: [
-        { start: '08:50', end: '09:40', name: 'Period 1', teacher: 'Teacher', room: 'G4', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'Sc3', type: 'class' },
-        { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Period 4', teacher: 'Teacher', room: 'E2', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'M1', type: 'class' },
-        { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'S23', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr Fulton', room: 'T1', type: 'class' }
+        { time: '08:50 - 09:40', period: 'Period 1', name: 'Physical Education – CfE', teacher: 'Mr Fulton', room: 'P/E', type: 'class' },
+        { time: '09:40 - 10:25', period: 'Period 2', name: 'English – CfE', teacher: 'Mr McGeary', room: 'F12', type: 'class' },
+        { time: '10:25 - 11:10', period: 'Period 3', name: 'Modern Studies – CfE', teacher: 'Mr Kelly', room: 'S23', type: 'class' },
+        { time: '11:10 - 11:25', period: 'Break', name: 'Morning Break', teacher: 'Cafeteria', room: 'Break', type: 'break' },
+        { time: '11:25 - 12:15', period: 'Period 4', name: 'Biology – CfE', teacher: 'Mrs Cullen', room: 'S4', type: 'class' },
+        { time: '12:15 - 13:05', period: 'Period 5', name: 'Mathematics – CfE', teacher: 'Mr McLarty', room: 'F3', type: 'class' },
+        { time: '13:05 - 13:45', period: 'Lunch', name: 'Lunch Break', teacher: 'Dining Hall', room: 'Break', type: 'break' },
+        { time: '13:45 - 14:30', period: 'Period 6', name: 'Business Management – CfE', teacher: 'Mr McDermott', room: 'F24', type: 'class' },
+        { time: '14:30 - 15:15', period: 'Period 7', name: 'Developing the Young Workforce', teacher: 'Ms Johnston', room: 'S20', type: 'class' }
       ],
       Friday: [
-        { start: '08:50', end: '09:40', name: 'Mathematics', teacher: 'Mr McLarty', room: 'F1', type: 'class' },
-        { start: '09:40', end: '10:25', name: 'Period 2', teacher: 'Teacher', room: 'E2', type: 'class' },
-        { start: '10:25', end: '11:10', name: 'Period 3', teacher: 'Teacher', room: 'D1', type: 'class' },
-        { start: '11:10', end: '11:25', name: 'Morning Break', teacher: 'Break', room: 'Cafeteria', type: 'break' },
-        { start: '11:25', end: '12:15', name: 'Period 4', teacher: 'Teacher', room: 'IT1', type: 'class' },
-        { start: '12:15', end: '13:05', name: 'Period 5', teacher: 'Teacher', room: 'S23', type: 'class' },
-        { start: '13:05', end: '13:50', name: 'Lunch', teacher: 'Break', room: 'Dining Hall', type: 'break' },
-        { start: '13:50', end: '14:35', name: 'Period 6', teacher: 'Teacher', room: 'Sc4', type: 'class' },
-        { start: '14:35', end: '15:15', name: 'Period 7', teacher: 'Mr McGimpsy', room: 'P/E', type: 'class' }
+        { time: '08:50 - 09:40', period: 'Period 1', name: 'Administration – CfE', teacher: 'Mr McDermott', room: 'F24', type: 'class' },
+        { time: '09:40 - 10:25', period: 'Period 2', name: 'Modern Studies – CfE', teacher: 'Mr Kelly', room: 'S23', type: 'class' },
+        { time: '10:25 - 11:10', period: 'Period 3', name: 'Mathematics – CfE', teacher: 'Mr McLarty', room: 'F3', type: 'class' },
+        { time: '11:10 - 11:25', period: 'Break', name: 'Morning Break', teacher: 'Cafeteria', room: 'Break', type: 'break' },
+        { time: '11:25 - 12:15', period: 'Period 4', name: 'Business Management – CfE', teacher: 'Mr McDermott', room: 'F24', type: 'class' },
+        { time: '12:15 - 13:05', period: 'Period 5', name: 'English – CfE', teacher: 'Mr McGeary', room: 'F12', type: 'class' },
+        { time: '13:05 - 13:45', period: 'Lunch', name: 'Lunch Break', teacher: 'Dining Hall', room: 'Break', type: 'break' },
+        { time: '13:45 - 14:30', period: 'Period 6', name: 'Physical Education – CfE', teacher: 'Mr Fulton', room: 'P/E', type: 'class' },
+        { time: '14:30 - 15:15', period: 'Period 7', name: 'PE Core – 5-14', teacher: 'Mr McGimpsey', room: 'P/E', type: 'class' }
       ]
     };
 
-    let userProfile = JSON.parse(localStorage.getItem('sudais_profile')) || defaultProfile;
-    let scheduleData = JSON.parse(localStorage.getItem('sudais_schedule')) || defaultScheduleData;
-    let activeDay = 'Monday';
-    let currentView = 'timetable';
-
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const todayName = daysOfWeek[new Date().getDay()];
-    if (scheduleData[todayName]) {
-      activeDay = todayName;
+    let currentDay = 'Monday';
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    
+    // Auto detect today if weekday
+    const jsDay = new Date().getDay();
+    if (jsDay >= 1 && jsDay <= 5) {
+      currentDay = days[jsDay - 1];
     }
 
-    function applyProfileUI() {
-      document.getElementById('app-username').innerText = userProfile.name;
-      document.getElementById('app-subtitle').innerText = userProfile.sub;
-      const parts = userProfile.name.split(' ').filter(Boolean);
-      let initials = parts.length > 1 ? (parts[0][0] + parts[1][0]) : (parts[0] ? parts[0].substring(0, 2) : 'SN');
-      document.getElementById('user-initials').innerText = initials.toUpperCase();
-    }
-
-    function setDay(day) {
-      activeDay = day;
-      currentView = 'timetable';
-      updateNavStyles();
-      document.querySelectorAll('.day-btn').forEach(btn => {
-        if(btn.id === `btn-${day}`) {
-          btn.className = "day-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap bg-purple-600 text-white shadow-lg shadow-purple-600/30";
+    function switchDay(day) {
+      currentDay = day;
+      document.querySelectorAll('.day-tab').forEach(btn => {
+        if(btn.id === `tab-${day}`) {
+          btn.className = "day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap bg-blue-600 text-white shadow-lg shadow-blue-600/30";
         } else {
-          btn.className = "day-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap bg-cyber-card text-slate-400 border border-slate-800";
+          btn.className = "day-tab px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap glass-pill text-slate-400 hover:text-white";
         }
       });
-      renderTimetable();
+      renderTimeline(currentDay);
     }
 
-    function updateNavStyles() {
-      const tBtn = document.getElementById('nav-btn-timetable');
-      const bBtn = document.getElementById('nav-btn-bells');
-      if (currentView === 'timetable') {
-        tBtn.className = "flex flex-col items-center gap-1 text-cyan-400 py-1 px-4";
-        bBtn.className = "flex flex-col items-center gap-1 text-slate-400 hover:text-white py-1 px-4 transition-colors";
-      } else {
-        bBtn.className = "flex flex-col items-center gap-1 text-cyan-400 py-1 px-4";
-        tBtn.className = "flex flex-col items-center gap-1 text-slate-400 hover:text-white py-1 px-4 transition-colors";
-      }
-    }
-
-    function renderTimetable() {
-      const listContainer = document.getElementById('timetable-list');
-      const dayLabel = document.getElementById('current-day-label');
-      const classCount = document.getElementById('class-count');
+    function renderTimeline(day) {
+      const container = document.getElementById('timeline-container');
+      document.getElementById('active-day-title').innerText = `${day} Timeline`;
+      const list = fullSchedule[day];
+      document.getElementById('active-day-count').innerText = `${list.filter(x => x.type === 'class').length} classes scheduled`;
       
-      dayLabel.innerText = `${activeDay} Schedule`;
-      const classes = scheduleData[activeDay] || [];
-      classCount.innerText = `${classes.filter(c => c.type === 'class').length} classes`;
-
-      listContainer.innerHTML = '';
-
-      if (classes.length === 0) {
-        listContainer.innerHTML = `<div class="cyber-card rounded-2xl p-6 text-center text-slate-400 text-xs">No classes added for this day yet. Tap "+ Add Class" above!</div>`;
-        return;
-      }
-
-      classes.forEach((item, index) => {
+      container.innerHTML = '';
+      
+      list.forEach(item => {
         const isBreak = item.type === 'break';
         const card = document.createElement('div');
-        card.className = `cyber-card rounded-2xl p-4 flex items-center justify-between transition-all ${isBreak ? 'border-amber-500/30 bg-amber-950/10' : ''}`;
         
-        card.innerHTML = `
-          <div class="flex items-center gap-3">
-            <div class="w-14 py-2 rounded-xl ${isBreak ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-purple-950/60 text-purple-300 border border-purple-500/20'} flex flex-col items-center justify-center font-mono text-xs font-bold">
-              <span>${item.start}</span>
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h3 class="text-sm font-bold text-white">${item.name}</h3>
-                ${isBreak ? '<span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">BREAK</span>' : ''}
+        if (isBreak) {
+          card.className = "glass-panel rounded-2xl p-3.5 border border-amber-500/30 bg-amber-500/5 flex items-center justify-between";
+          card.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="w-16 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-center font-mono text-[11px] font-bold">
+                ${item.period}
               </div>
-              <p class="text-xs text-slate-400 mt-0.5">${item.teacher} • <span class="text-cyan-400">${item.room}</span></p>
+              <div>
+                <h3 class="text-xs font-bold text-amber-200">${item.name}</h3>
+                <p class="text-[10px] text-amber-400/80 mt-0.5">${item.teacher} • ${item.room}</p>
+              </div>
             </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <div class="text-right mr-1">
-              <span class="text-xs font-mono text-slate-500">${item.end}</span>
+            <span class="text-[11px] font-mono font-semibold text-amber-300/90">${item.time}</span>
+          `;
+        } else {
+          card.className = "glass-panel rounded-2xl p-4 flex items-center justify-between transition-all hover:border-blue-500/40";
+          card.innerHTML = `
+            <div class="flex items-center gap-3.5">
+              <div class="w-16 py-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 text-center font-mono text-[11px] font-bold shadow-inner">
+                ${item.period}
+              </div>
+              <div>
+                <h3 class="text-xs font-bold text-white tracking-wide">${item.name}</h3>
+                <p class="text-[11px] text-slate-400 mt-0.5 font-medium">${item.teacher} • <span class="text-blue-400 font-semibold">${item.room}</span></p>
+              </div>
             </div>
-            <button onclick="openEditModal('${activeDay}', ${index})" class="p-2 rounded-xl bg-purple-950/40 border border-purple-500/20 text-purple-300 hover:bg-purple-900/60 transition-colors" title="Edit">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button onclick="deleteClass('${activeDay}', ${index})" class="p-2 rounded-xl bg-red-950/40 border border-red-500/20 text-red-300 hover:bg-red-900/60 transition-colors" title="Delete">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-            </button>
-          </div>
-        `;
-        listContainer.appendChild(card);
+            <div class="text-right">
+              <span class="text-[11px] font-mono font-semibold text-slate-400">${item.time}</span>
+            </div>
+          `;
+        }
+        container.appendChild(card);
       });
     }
 
-    function openAddClassModal() {
-      document.getElementById('modal-title').innerText = "Add New Class / Event";
-      document.getElementById('edit-day').value = activeDay;
-      document.getElementById('edit-index').value = "-1";
-      document.getElementById('edit-name').value = "";
-      document.getElementById('edit-teacher').value = "";
-      document.getElementById('edit-room').value = "";
-      document.getElementById('edit-start').value = "";
-      document.getElementById('edit-end').value = "";
-      document.getElementById('edit-type').value = "class";
+    function switchView(view) {
+      const tBtn = document.getElementById('nav-timetable');
+      const bBtn = document.getElementById('nav-bells');
+      const container = document.getElementById('timeline-container');
       
-      document.getElementById('edit-modal').classList.remove('hidden');
-    }
-
-    function openEditModal(day, index) {
-      const item = scheduleData[day][index];
-      document.getElementById('modal-title').innerText = "Edit Class Details";
-      document.getElementById('edit-day').value = day;
-      document.getElementById('edit-index').value = index;
-      document.getElementById('edit-name').value = item.name;
-      document.getElementById('edit-teacher').value = item.teacher;
-      document.getElementById('edit-room').value = item.room;
-      document.getElementById('edit-start').value = item.start;
-      document.getElementById('edit-end').value = item.end;
-      document.getElementById('edit-type').value = item.type || 'class';
-      
-      document.getElementById('edit-modal').classList.remove('hidden');
-    }
-
-    function closeEditModal() {
-      document.getElementById('edit-modal').classList.add('hidden');
-    }
-
-    function saveClassData() {
-      const day = document.getElementById('edit-day').value;
-      const index = parseInt(document.getElementById('edit-index').value);
-
-      const newItem = {
-        name: document.getElementById('edit-name').value || 'Untitled',
-        teacher: document.getElementById('edit-teacher').value || 'Staff',
-        room: document.getElementById('edit-room').value || 'Room',
-        start: document.getElementById('edit-start').value || '00:00',
-        end: document.getElementById('edit-end').value || '00:00',
-        type: document.getElementById('edit-type').value
-      };
-
-      if (index === -1) {
-        if (!scheduleData[day]) scheduleData[day] = [];
-        scheduleData[day].push(newItem);
+      if (view === 'timetable') {
+        tBtn.className = "flex flex-col items-center gap-1 text-blue-400 py-1.5 px-6 transition-colors";
+        bBtn.className = "flex flex-col items-center gap-1 text-slate-400 hover:text-white py-1.5 px-6 transition-colors";
+        renderTimeline(currentDay);
       } else {
-        scheduleData[day][index] = newItem;
-      }
-
-      localStorage.setItem('sudais_schedule', JSON.stringify(scheduleData));
-      closeEditModal();
-      renderTimetable();
-      updateCountdown();
-    }
-
-    function deleteClass(day, index) {
-      if (confirm("Delete this item from your schedule?")) {
-        scheduleData[day].splice(index, 1);
-        localStorage.setItem('sudais_schedule', JSON.stringify(scheduleData));
-        renderTimetable();
-        updateCountdown();
-      }
-    }
-
-    function openProfileModal() {
-      document.getElementById('profile-name-input').value = userProfile.name;
-      document.getElementById('profile-sub-input').value = userProfile.sub;
-      document.getElementById('profile-modal').classList.remove('hidden');
-    }
-
-    function closeProfileModal() {
-      document.getElementById('profile-modal').classList.add('hidden');
-    }
-
-    function saveProfileData() {
-      userProfile.name = document.getElementById('profile-name-input').value || 'User';
-      userProfile.sub = document.getElementById('profile-sub-input').value || 'Student';
-      localStorage.setItem('sudais_profile', JSON.stringify(userProfile));
-      applyProfileUI();
-      closeProfileModal();
-    }
-
-    function resetToDefaultData() {
-      if(confirm("Reset everything (profile and schedule) back to original defaults?")) {
-        localStorage.removeItem('sudais_schedule');
-        localStorage.removeItem('sudais_profile');
-        scheduleData = JSON.parse(JSON.stringify(defaultScheduleData));
-        userProfile = JSON.parse(JSON.stringify(defaultProfile));
-        applyProfileUI();
-        setDay('Monday');
-        updateCountdown();
+        bBtn.className = "flex flex-col items-center gap-1 text-blue-400 py-1.5 px-6 transition-colors";
+        tBtn.className = "flex flex-col items-center gap-1 text-slate-400 hover:text-white py-1.5 px-6 transition-colors";
+        document.getElementById('active-day-title').innerText = "Bell Schedule";
+        document.getElementById('active-day-count').innerText = "Daily standard times";
+        
+        const bells = [
+          { period: 'Period 1', time: '08:50 - 09:40' },
+          { period: 'Period 2', time: '09:40 - 10:25' },
+          { period: 'Period 3', time: '10:25 - 11:10' },
+          { period: 'Break', time: '11:10 - 11:25' },
+          { period: 'Period 4', time: '11:25 - 12:15' },
+          { period: 'Period 5', time: '12:15 - 13:05' },
+          { period: 'Lunch', time: '13:05 - 13:45' },
+          { period: 'Period 6', time: '13:45 - 14:30' },
+          { period: 'Period 7', time: '14:30 - 15:15' }
+        ];
+        
+        container.innerHTML = '';
+        bells.forEach(b => {
+          const card = document.createElement('div');
+          card.className = "glass-panel rounded-2xl p-4 flex items-center justify-between";
+          card.innerHTML = `
+            <span class="text-xs font-bold text-white">${b.period}</span>
+            <span class="text-xs font-mono font-semibold text-blue-400">${b.time}</span>
+          `;
+          container.appendChild(card);
+        });
       }
     }
 
-    function updateCountdown() {
-      const now = new Date();
-      const currentDayStr = daysOfWeek[now.getDay()];
-      const currentTimeMins = now.getHours() * 60 + now.getMinutes();
-
-      const titleEl = document.getElementById('next-class-title');
-      const timerEl = document.getElementById('countdown-timer');
-      const statusEl = document.getElementById('live-status');
-
-      if (!scheduleData[currentDayStr] || currentDayStr === 'Saturday' || currentDayStr === 'Sunday') {
-        statusEl.innerText = "Weekend";
-        titleEl.innerText = "Enjoy your weekend!";
-        timerEl.innerText = "CLOSED";
-        return;
-      }
-
-      const dayClasses = scheduleData[currentDayStr] || [];
-      let nextClass = null;
-
-      for (let cls of dayClasses) {
-        const [sh, sm] = cls.start.split(':').map(Number);
-        const startMins = sh * 60 + sm;
-        if (startMins > currentTimeMins) {
-          nextClass = cls;
-          break;
-        }
-      }
-
-      if (nextClass) {
-        statusEl.innerText = "Active";
-        titleEl.innerText = `Next: ${nextClass.name} (${nextClass.teacher})`;
-
-        const [sh, sm] = nextClass.start.split(':').map(Number);
-        const targetTotalSecs = (sh * 3600 + sm * 60);
-        const currentTotalSecs = (now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds());
-        let diffSecs = targetTotalSecs - currentTotalSecs;
-
-        const h = Math.floor(diffSecs / 3600);
-        const m = Math.floor((diffSecs % 3600) / 60);
-        const s = diffSecs % 60;
-
-        timerEl.innerText = `${h > 0 ? h + 'h ' : ''}${m.toString().padStart(2, '0')}m ${s.toString().padStart(2, '0')}s`;
-      } else {
-        statusEl.innerText = "Finished";
-        titleEl.innerText = "All Classes Done";
-        timerEl.innerText = "00:00:00";
-      }
-    }
-
-    function switchTab(tab) {
-      currentView = tab;
-      updateNavStyles();
-      if(tab === 'timetable') {
-        setDay(activeDay);
-      } else {
-        const listContainer = document.getElementById('timetable-list');
-        document.getElementById('current-day-label').innerText = "Bell Times Schedule";
-        document.getElementById('class-count').innerText = "Standard Bells";
-        listContainer.innerHTML = `
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-white">Warning Bell</span><span class="font-mono text-cyan-400">08:45 AM</span></div>
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-white">Period 1</span><span class="font-mono text-cyan-400">08:50 - 09:40</span></div>
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-white">Period 2</span><span class="font-mono text-cyan-400">09:40 - 10:25</span></div>
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-white">Period 3</span><span class="font-mono text-cyan-400">10:25 - 11:10</span></div>
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-amber-400">Morning Break</span><span class="font-mono text-amber-300">11:10 - 11:25</span></div>
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-white">Period 4</span><span class="font-mono text-cyan-400">11:25 - 12:15</span></div>
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-white">Period 5</span><span class="font-mono text-cyan-400">12:15 - 13:05</span></div>
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-amber-400">Lunch Break</span><span class="font-mono text-amber-300">13:05 - 13:50</span></div>
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-white">Period 6</span><span class="font-mono text-cyan-400">13:50 - 14:35</span></div>
-          <div class="cyber-card rounded-2xl p-4 flex justify-between items-center"><span class="text-sm font-bold text-white">Period 7</span><span class="font-mono text-cyan-400">14:35 - 15:15</span></div>
-        `;
-      }
-    }
-
-    applyProfileUI();
-    setDay(activeDay);
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+    // Initial render
+    switchDay(currentDay);
   </script>
 </body>
 </html>
+
